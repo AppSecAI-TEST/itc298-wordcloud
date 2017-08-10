@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+
+import android.util.Base64;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,10 @@ import android.widget.TextView;
 
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,12 +34,6 @@ import net.alhazmy13.wordcloud.ColorTemplate;
 import net.alhazmy13.wordcloud.WordCloud;
 import net.alhazmy13.wordcloud.WordCloudView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-
 /**
  * Created by hsMacbook on 2017. 7. 17..
  */
@@ -40,8 +41,9 @@ import java.net.URI;
 public class WordcloudActivity extends AppCompatActivity implements
         OnClickListener {
 
-    private static final int OPEN_DOCUMENT_REQUEST = 1;
+    private static final int LOAD_IMAGE_RESULTS = 1;
 
+    private static final int OPEN_DOCUMENT_REQUEST = 1;
     private EditText txtInput;
     private Button clearInputButton;
     private Button openFileButton;
@@ -102,10 +104,10 @@ public class WordcloudActivity extends AppCompatActivity implements
                 Log.d("WordcloudActivity", "UriIntent: " + intent.toString());
             }
         }
+
         if (Intent.ACTION_VIEW.equals(action) && type != null) {
             if (intent.getData() != null) {
                 Uri uri = intent.getData();
-
                 try {
                     String content = readFileContent(uri);
                     txtInput.setText(content);
@@ -134,8 +136,6 @@ public class WordcloudActivity extends AppCompatActivity implements
         }
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,6 +181,7 @@ public class WordcloudActivity extends AppCompatActivity implements
                 break;
             case R.id.openFileButton:
                 openFile();
+//              openPDFDOC();
                 break;
             case R.id.clearInputButton:
                 new AlertDialog.Builder(this).
@@ -200,17 +201,15 @@ public class WordcloudActivity extends AppCompatActivity implements
                         .show();
                 break;
             case R.id.generateImage:
-                Intent i = new Intent(getApplicationContext(), WordCloudOutput.class);
+                Intent i = new Intent(WordcloudActivity.this, WordCloudOutput.class);
+                Log.d("txtInput", i.toString());
+                i.putExtra("txtInput", txtInput.getText().toString());
                 startActivity(i);
                 break;
         }
     }
 
     public void populateResults() {
-
-       wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
-
-
         wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
@@ -226,6 +225,13 @@ public class WordcloudActivity extends AppCompatActivity implements
         startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
     }
 
+//    private void openPDFDOC() {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        intent.setType("application/pdf");
+//        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+//    }
+
     private void processInput(String text) {
         wordCounter.countWords(text);
     }
@@ -239,7 +245,8 @@ public class WordcloudActivity extends AppCompatActivity implements
         if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
-
+//                String content = getStringFile(uri);
+//                txtInput.setText(content);
                 try {
                     String content = readFileContent(uri);
                     txtInput.setText(content);
@@ -249,6 +256,33 @@ public class WordcloudActivity extends AppCompatActivity implements
 
             }
         }
+    }
+
+    public String getStringFile(Uri uri) {
+        InputStream inputStream = null;
+        String encodedFile= "", lastVal;
+        try {
+            inputStream = getContentResolver().openInputStream(uri); //new FileInputStream(f.getAbsolutePath());
+
+            byte[] buffer = new byte[10240];//specify the size to allow
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output64.write(buffer, 0, bytesRead);
+            }
+            output64.close();
+            encodedFile =  output.toString();
+        }
+        catch (FileNotFoundException e1 ) {
+            e1.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        lastVal = encodedFile;
+        return lastVal;
     }
 
     private String readFileContent(Uri uri) throws IOException {

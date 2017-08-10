@@ -29,7 +29,6 @@ public class WordCounter {
     }
 
     public void countWords(String in){
-
         //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
         String[] allWords = in.split("[^a-zA-Z0-9']+");
 
