@@ -71,9 +71,9 @@
         android:id="@+id/generateImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GENERATE@@"
-        android:layout_alignBaseline="@+id/clearInputButton"
-        android:layout_alignBottom="@+id/clearInputButton"
+        android:text="GENERATE WITH IMAGE"
+        android:textSize="8sp"
+        android:layout_below="@+id/textContainer"
         android:layout_toStartOf="@+id/openFileButton" />
 
     <LinearLayout

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WordcloudActivity"
+            android:name=".WordCloudActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -30,10 +30,10 @@
             </intent-filter>
             </activity>
         <activity
-            android:name=".WordCloudOutput"
-            android:label="output">
+            android:name=".WordCloudOutputActivity"
+            android:label="Word Cloud">
         </activity>
-
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     </application>
 </manifest>

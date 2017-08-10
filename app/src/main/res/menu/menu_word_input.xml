@@ -1,15 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="net.denryu.android.wordcloud.WordInputActivity">
-    <item
-    android:id="@+id/item_share"
-    android:title="Share"
-    />
-
-    <item
-        android:id="@+id/item_clear_history"
-        android:title="Clear History"
-        />
 
     <item
         android:id="@+id/about"
