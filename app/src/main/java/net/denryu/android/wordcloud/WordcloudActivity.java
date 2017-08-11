@@ -27,23 +27,11 @@ import java.io.InputStreamReader;
 public class WordCloudActivity extends AppCompatActivity implements
         OnClickListener {
 
-    private static final int LOAD_IMAGE_RESULTS = 1;
-
     private static final int OPEN_DOCUMENT_REQUEST = 1;
     private EditText txtInput;
     private Button clearInputButton;
     private Button openFileButton;
-    private Button generateButton;
-    private TextView mostWordResult;
-    private TextView appearanceResult;
-    private TextView uniqueResult;
-    private TextView totalCountResult;
-
-    //this button will be used for creating the output image
     private Button generateImage;
-
-    private WordCounter wordCounter;
-    private WordCounterDB wordCounterDB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,24 +39,12 @@ public class WordCloudActivity extends AppCompatActivity implements
         setContentView(R.layout.wordcloud_activity);
 
         txtInput = (EditText) findViewById(R.id.txtInput);
-        generateButton = (Button) findViewById(R.id.generateButton);
-        generateButton.setOnClickListener(this);
+        generateImage = (Button) findViewById(R.id.generateImage);
+        generateImage.setOnClickListener(this);
         openFileButton = (Button) findViewById(R.id.openFileButton);
         openFileButton.setOnClickListener(this);
         clearInputButton = (Button) findViewById(R.id.clearInputButton);
         clearInputButton.setOnClickListener(this);
-
-        mostWordResult = (TextView) findViewById(R.id.commonWord);
-        appearanceResult = (TextView) findViewById(R.id.appearanceResult);
-        uniqueResult = (TextView) findViewById(R.id.distinctResult);
-        totalCountResult = (TextView) findViewById(R.id.totalCountings);
-
-        wordCounter = new WordCounter();
-        wordCounterDB = new WordCounterDB(this);
-
-        //this button will be used for creating the output image
-        generateImage = (Button) findViewById(R.id.generateImage);
-        generateImage.setOnClickListener(this);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -84,8 +60,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                 } catch (IOException e) {
                     //Some log, Alert or Toast goes here
                 }
-            }
-            else if ("text/plain".equals(type)) {
+            } else if ("text/plain".equals(type)) {
                 handleSendText(intent);
                 Log.d("WordCloudActivity", "UriIntent: " + intent.toString());
             }
@@ -102,7 +77,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                 }
 
             }
-            }
+        }
     }
 
     @Override
@@ -148,9 +123,10 @@ public class WordCloudActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.generateButton:
-                processInput(txtInput.getText().toString());
-                populateResults();
+            case R.id.generateImage:
+                Intent i = new Intent(WordCloudActivity.this, WordCloudOutputActivity.class);
+                i.putExtra("txtInput", txtInput.getText().toString());
+                startActivity(i);
                 break;
             case R.id.openFileButton:
                 openFile();
@@ -173,21 +149,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                         })
                         .show();
                 break;
-            case R.id.generateImage:
-                Intent i = new Intent(WordCloudActivity.this, WordCloudOutputActivity.class);
-                i.putExtra("txtInput", txtInput.getText().toString());
-                startActivity(i);
-                break;
         }
-    }
-
-    public void populateResults() {
-        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
-        uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
-        totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
-        mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
-        String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
-        appearanceResult.setText(appearanceRateString);
     }
 
     private void openFile() {
@@ -203,10 +165,6 @@ public class WordCloudActivity extends AppCompatActivity implements
 //        intent.setType("application/pdf");
 //        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
 //    }
-
-    private void processInput(String text) {
-        wordCounter.countWords(text);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -235,5 +193,4 @@ public class WordCloudActivity extends AppCompatActivity implements
         inStream.close();
         return stringBuilder.toString();
     }
-
 }

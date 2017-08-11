@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:counterEnabled="true"
-        app:counterMaxLength="1000"
+        app:counterMaxLength="10000"
         android:layout_below="@+id/inputTxtView"
         android:layout_alignParentStart="true">
 
@@ -35,157 +35,36 @@
             android:layout_alignTop="@+id/inputTxtView"
             android:layout_marginTop="28dp"
             android:ems="10"
-            android:scrollbars="vertical"
-            android:inputType="textMultiLine"
-            android:lines="6"
             android:fadeScrollbars="false"
-             />
+            android:inputType="textMultiLine"
+            android:lines="22"
+            android:scrollbars="vertical"
+            android:textColorLink="@color/colorPrimaryDark" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/clearInputButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120sp"
+        android:layout_height="50sp"
         android:text="@string/clearInput"
-        android:layout_below="@+id/textContainer"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/openFileButton" />
 
     <Button
         android:id="@+id/openFileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/openFileButton"
-        android:layout_below="@+id/textContainer"
-        android:layout_toStartOf="@+id/generateButton" />
+        android:layout_width="120sp"
+        android:layout_height="50sp"
+        android:layout_alignParentBottom="true"
 
-    <Button
-        android:id="@+id/generateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/generate"
-        android:layout_below="@+id/textContainer"
-        android:layout_alignParentEnd="true" />
+        android:text="@string/openFileButton" />
 
 
     <Button
         android:id="@+id/generateImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GENERATE WITH IMAGE"
-        android:textSize="8sp"
-        android:layout_below="@+id/textContainer"
-        android:layout_toStartOf="@+id/openFileButton" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/clearInputButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:id="@+id/mostWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/inputTxtView"
-            android:layout_below="@+id/generateButton"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="@string/buzzWord"
-            android:textAllCaps="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/commonWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/linearLayout"
-            android:layout_marginBottom="15sp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:textSize="25dp"
-            android:text="COMMON WORD!"
-            tools:id="@id/commonWord" />
-
-        <TextView
-            android:id="@+id/appearanceRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/mostWord"
-            android:layout_below="@+id/mostWord"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="@string/appearanceRate"
-            android:textAllCaps="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/appearanceResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/commonWord"
-            android:layout_below="@+id/commonWord"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
-            android:layout_weight="1"
-            android:text="PERCENTAGE!"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/uniqueWords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/appearanceRate"
-            android:layout_below="@+id/appearanceRate"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="@string/uniqueWords"
-            android:textAllCaps="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/distinctResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/appearanceResult"
-            android:layout_below="@+id/appearanceResult"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
-            android:layout_weight="1"
-            android:text="DISTINCT WORD!"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/totalCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/uniqueWords"
-            android:layout_below="@+id/uniqueWords"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="@string/totalWord"
-            android:textAllCaps="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/totalCountings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/distinctResult"
-            android:layout_below="@+id/distinctResult"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
-            android:layout_weight="1"
-            android:text="TOTAL COUNTS!"
-            android:textSize="25sp" />
-    </LinearLayout>
+        android:layout_width="120sp"
+        android:layout_height="50sp"
+        android:text="GENERATE!"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
